@@ -1,4 +1,3 @@
-// import 'vite/dynamic-import-polyfill';
 import './bootstrap';
 import '../css/app.css';
 
