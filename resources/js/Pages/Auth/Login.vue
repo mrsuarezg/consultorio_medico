@@ -1,25 +1,27 @@
 <script setup>
 import { Head, Link, useForm } from '@inertiajs/vue3';
-import AuthenticationCard from '@/Components/AuthenticationCard.vue';
-import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
-import Checkbox from '@/Components/Checkbox.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
+import { VNodeRenderer } from '@layouts/components/VNodeRenderer';
+import { themeConfig } from '@themeConfig';
+import { emailValidator, requiredValidator } from '@validators/validators.js';
+import { VForm } from 'vuetify/components';
 
 defineProps({
     canResetPassword: Boolean,
     status: String,
+    errors: Object,
 });
 
+const isPasswordVisible = ref(false);
+const refVForm = ref();
 const form = useForm({
     email: '',
     password: '',
-    remember: false,
+    remember: false
 });
 
-const submit = () => {
+defineOptions({ layout: null });
+
+function login() {
     form.transform(data => ({
         ...data,
         remember: form.remember ? 'on' : '',
@@ -27,64 +29,76 @@ const submit = () => {
         onFinish: () => form.reset('password'),
     });
 };
+
+async function onSubmit() {
+    const { valid } = await refVForm.value?.validate();
+    if (valid) {
+        login();
+    }
+};
 </script>
 
 <template>
-    <Head title="Log in" />
+    <Head title="Iniciar sesi&oacute;n" />
 
-    <AuthenticationCard>
-        <template #logo>
-            <AuthenticationCardLogo />
-        </template>
+    <div class="d-flex align-center justify-center h-screen bg-login">
+        <VCard flat :max-width="500" class="mt-12 mt-sm-0 pa-4">
+            <VCardText>
+                <div class="d-flex align-start justify-center gap-x-3">
+                    <h1 class="font-weight-medium leading-normal text-2xl text-uppercase">
+                        {{ themeConfig.app.title }}
+                    </h1>
 
-        <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
-            {{ status }}
-        </div>
+                    <VNodeRenderer :nodes="themeConfig.app.logo" />
+                </div>
 
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="email" value="Email" />
-                <TextInput
-                    id="email"
-                    v-model="form.email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    required
-                    autofocus
-                    autocomplete="username"
-                />
-                <InputError class="mt-2" :message="form.errors.email" />
-            </div>
+                <h5 class="text-h5 font-weight-medium mb-1" title="Sistema de seguros y fianzas">
+                    Bienvenido
+                </h5>
+                <p class="mb-0">
+                    Inicia con tus credenciales para continuar
+                </p>
+            </VCardText>
+            <VCardText>
+                <VForm ref="refVForm" @submit.prevent="onSubmit">
+                    <VRow>
+                        <!-- email -->
+                        <VCol cols="12">
+                            <VTextField id="email" v-model="form.email" label="Correo electr&oacute;nico" type="email"
+                                :rules="[requiredValidator, emailValidator]" :error-messages="errors.email"
+                                :disabled="form.processing" />
+                        </VCol>
 
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
-                <TextInput
-                    id="password"
-                    v-model="form.password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    required
-                    autocomplete="current-password"
-                />
-                <InputError class="mt-2" :message="form.errors.password" />
-            </div>
+                        <!-- password -->
+                        <VCol cols="12">
+                            <VTextField id="password" v-model="form.password" label="Contraseña"
+                                :rules="[requiredValidator]" :type="isPasswordVisible ? 'text' : 'password'"
+                                :error-messages="errors.password"
+                                :append-inner-icon="isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
+                                @click:append-inner="isPasswordVisible = !isPasswordVisible" :disabled="form.processing" />
 
-            <div class="block mt-4">
-                <label class="flex items-center">
-                    <Checkbox v-model:checked="form.remember" name="remember" />
-                    <span class="ms-2 text-sm text-gray-600">Remember me</span>
-                </label>
-            </div>
+                            <div class="d-flex align-center flex-wrap justify-space-between mt-1 mb-4">
+                                <VCheckbox v-model="form.remember" label="Recordar sesi&oacute;n"
+                                    :disabled="form.processing" />
+                                <Link v-if="canResetPassword" class="text-primary ms-2 mb-1 disabled"
+                                    :href="route('password.request')">
+                                ¿Olvidaste tu contraseña?
+                                </Link>
+                            </div>
 
-            <div class="flex items-center justify-end mt-4">
-                <Link v-if="canResetPassword" :href="route('password.request')" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    Forgot your password?
-                </Link>
-
-                <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Log in
-                </PrimaryButton>
-            </div>
-        </form>
-    </AuthenticationCard>
+                            <VBtn class="w-100" type="submit" color="primary" :loading="form.processing">
+                                Iniciar sesi&oacute;n
+                                <template #loader>
+                                    <VProgressCircular indeterminate color="dark-blue" />
+                                </template>
+                            </VBtn>
+                        </VCol>
+                    </VRow>
+                </VForm>
+            </VCardText>
+        </VCard>
+    </div>
 </template>
+<style lang="scss">
+@use "@core/scss/template/pages/page-auth.scss";
+</style>

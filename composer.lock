@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4ba60e7cad58709c7a2d90e4ecf11db0",
+    "content-hash": "ced3d94b29c48bd69b7003d99c17f171",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -1220,6 +1220,63 @@
                 }
             ],
             "time": "2023-10-27T10:59:02+00:00"
+        },
+        {
+            "name": "laravel-latam/spanish",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel-latam/spanish.git",
+                "reference": "df9c9e6884372e3916e9b549f63f9c10473a773e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel-latam/spanish/zipball/df9c9e6884372e3916e9b549f63f9c10473a773e",
+                "reference": "df9c9e6884372e3916e9b549f63f9c10473a773e",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^9.0|^10.0",
+                "laravel/framework": "^9.0|^10.0",
+                "php": "^7.3|^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "LaravelLatam\\Spanish\\SpanishServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "LaravelLatam\\Spanish\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Neftalí Yagua",
+                    "email": "despacho@neftaliyagua.com",
+                    "homepage": "https://neftaliyagua.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Spanish Package for Laravel",
+            "homepage": "https://github.com/laravel-latam/spanish",
+            "keywords": [
+                "laravel",
+                "latam",
+                "spanish"
+            ],
+            "support": {
+                "issues": "https://github.com/laravel-latam/spanish/issues",
+                "source": "https://github.com/laravel-latam/spanish/tree/1.1.0"
+            },
+            "time": "2023-05-27T19:47:06+00:00"
         },
         {
             "name": "laravel/fortify",

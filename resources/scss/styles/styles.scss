@@ -1,0 +1,14 @@
+// Write your overrides
+.disabled {
+  cursor: default;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.text-purple {
+  color: #8021bf;
+}
+
+.v-chip.purple {
+  background: #ab2cff;
+}

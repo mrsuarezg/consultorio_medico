@@ -1,0 +1,90 @@
+{
+    "compilerOptions": {
+        "target": "esnext",
+        "module": "esnext",
+        "moduleResolution": "node",
+        "baseUrl": ".",
+        "outDir": "./dist",
+        "jsx": "preserve",
+        "strict": true,
+        "allowJs": true,
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "paths": {
+            "@composables": [
+                "resources/js/utils/composables/index"
+            ],
+            "@models": [
+                "resources/js/utils/models/index"
+            ],
+            "@modules/*": [
+                "resources/js/modules/*"
+            ],
+            "@interfaces": [
+                "resources/js/utils/interfaces/index"
+            ],
+            "@data/*": [
+                "resources/js/utils/data/*"
+            ],
+            "@controllers": [
+                "resources/js/utils/controllers/index"
+            ],
+            "@components/*": [
+                "resources/js/components/*"
+            ],
+            "@navigation/*": [
+                "resources/js/navigation/*"
+            ],
+            "@themeConfig": [
+                "themeConfig.js"
+            ],
+            "@layouts/*": [
+                "resources/js/@layouts/*"
+            ],
+            "@core/*": [
+                "resources/js/@core/*"
+            ],
+            "@core": [
+                "resources/js/@core"
+            ],
+            "@images/*": [
+                "resources/images/*"
+            ],
+            "@styles/*": [
+                "resources/scss/styles/*"
+            ],
+            "@axios": [
+                "resources/js/plugins/axios"
+            ],
+            "@validators": [
+                "resources/js/utils/validators"
+            ],
+            "@services/*": [
+                "resources/js/services/*",
+            ],
+            "@utils/*": [
+                "resources/js/utils/*",
+            ],
+            "@plugins/*": [
+                "resources/js/plugins/*",
+            ],
+        },
+        "types": [
+            "vite/client",
+            "unplugin-vue-define-options/macros-global",
+            // otras definiciones de tipos según sea necesario...
+        ]
+    },
+    "include": [
+        "vite.config.*",
+        "resources/js/**/**/**/**/*.ts",
+        "resources/js/**/**/**/**/*.d.ts",
+        "resources/js/**/**/**/**/*.tsx",
+        "resources/js/**/**/**/**/*.vue"
+    ],
+    "exclude": [
+        "node_modules",
+        "public",
+        "dist"
+    ]
+}
