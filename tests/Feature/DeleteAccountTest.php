@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * This file is part of Consultorio Medico Application.
+ * (c) The devcsuarez Team <devcsuarez@gmail.com>
+ */
+
 namespace Tests\Feature;
 
 use App\Models\User;
@@ -13,7 +18,7 @@ class DeleteAccountTest extends TestCase
 
     public function test_user_accounts_can_be_deleted(): void
     {
-        if (! Features::hasAccountDeletionFeatures()) {
+        if (!Features::hasAccountDeletionFeatures()) {
             $this->markTestSkipped('Account deletion is not enabled.');
 
             return;
@@ -30,7 +35,7 @@ class DeleteAccountTest extends TestCase
 
     public function test_correct_password_must_be_provided_before_account_can_be_deleted(): void
     {
-        if (! Features::hasAccountDeletionFeatures()) {
+        if (!Features::hasAccountDeletionFeatures()) {
             $this->markTestSkipped('Account deletion is not enabled.');
 
             return;

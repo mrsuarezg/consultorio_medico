@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * This file is part of Consultorio Medico Application.
+ * (c) The devcsuarez Team <devcsuarez@gmail.com>
+ */
+
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -23,7 +28,7 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->reportable(function (Throwable $e) {
+        $this->reportable(function (Throwable $e): void {
             //
         });
     }

@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * This file is part of Consultorio Medico Application.
+ * (c) The devcsuarez Team <devcsuarez@gmail.com>
+ */
+
 use Laravel\Jetstream\Features;
 use Laravel\Jetstream\Http\Middleware\AuthenticateSession;
 

@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * This file is part of Consultorio Medico Application.
+ * (c) The devcsuarez Team <devcsuarez@gmail.com>
+ */
+
 namespace App\Providers;
 
 use Illuminate\Cache\RateLimiting\Limit;
@@ -28,7 +33,7 @@ class RouteServiceProvider extends ServiceProvider
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
 
-        $this->routes(function () {
+        $this->routes(function (): void {
             Route::middleware('api')
                 ->prefix('api')
                 ->group(base_path('routes/api.php'));

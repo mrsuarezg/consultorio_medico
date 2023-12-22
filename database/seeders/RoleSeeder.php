@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * This file is part of Consultorio Medico Application.
+ * (c) The devcsuarez Team <devcsuarez@gmail.com>
+ */
+
 namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;

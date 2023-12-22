@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * This file is part of Consultorio Medico Application.
+ * (c) The devcsuarez Team <devcsuarez@gmail.com>
+ */
+
 namespace Database\Seeders;
 
 use App\Models\User;
@@ -37,7 +42,7 @@ final class UserSeeder extends Seeder
                 'password' => Hash::make('Admin1234'),
                 'email' => 'joseluis@gmail.com',
                 'role' => 'doctor',
-            ]
+            ],
         ];
 
         foreach ($users as $user) {
@@ -47,6 +52,5 @@ final class UserSeeder extends Seeder
             $createdUser = User::query()->create($user + $commonData);
             $createdUser->assignRole($role);
         }
-
     }
 }
