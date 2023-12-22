@@ -2,8 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Tightenco\Ziggy\Ziggy;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -36,8 +38,24 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $relations = [
+            'roles',
+            'permissions',
+        ];
+
         return array_merge(parent::share($request), [
-            //
+            'auth.user' => $request->user() ? new UserResource($request->user()->load($relations)) : null,
+            'ziggy' => static function () use ($request): array {
+                return array_merge((new Ziggy())->toArray(), [
+                    'location' => $request->url(),
+                ]);
+            },
+            // get the previous url & pass it to the view, via Inertia
+            'urlPrevious' => url()->previous(),
+            // get the current route name & pass it to the view, via Inertia
+            'routeName' => request()->route()->getName(),
+            // 'unreadNotificationsCount' => $request->user()?->unreadNotifications()->count(),
+            // 'notifications' => $request->user()?->notifications()->orderBy('created_at', 'DESC')->limit(5)->get(),
         ]);
     }
 }

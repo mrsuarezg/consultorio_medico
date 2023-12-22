@@ -266,8 +266,9 @@ config-dev: ## Runs migration fresh, seed with class, key generate, passport ins
 	@make key-generate
 
 update-dev:
-	@make exec cmd="php artisan optimize:clear"
+	@make exec-root cmd="php artisan optimize:clear"
 	@make migrate-fresh
+	@make seed-dev
 	@make exec cmd="php artisan optimize:clear"
 
 seed-dev: ## Runs all seeds for test database
