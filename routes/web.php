@@ -8,6 +8,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Inertia\Response;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,7 +21,7 @@ use Inertia\Inertia;
 |
 */
 
-// Route::get('/', function () {
+// Route::get('/',static function (): Response {
 //     return Inertia::render('Welcome', [
 //         'canLogin' => Route::has('login'),
 //         'canRegister' => Route::has('register'),
@@ -38,10 +39,28 @@ Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
-])->group(function (): void {
-    Route::get('/dashboard', function () {
+])->group(static function (): void {
+    Route::get('/dashboard',static function (): Response {
         return Inertia::render('Dashboard', [
             'title' => 'Dashboard',
         ]);
     })->name('dashboard');
+
+    Route::get('/patients',static function (): Response {
+        return Inertia::render('Patients/Index', [
+            'title' => 'Pacientes',
+        ]);
+    })->name('patients');
+
+    Route::get('/consultations',static function (): Response {
+        return Inertia::render('Consultations/Index', [
+            'title' => 'Consultas',
+        ]);
+    })->name('consultations');
+
+    Route::get('/users',static function (): Response {
+        return Inertia::render('Users/Index', [
+            'title' => 'Usuarios',
+        ]);
+    })->name('users');
 });

@@ -1,5 +1,5 @@
 import './bootstrap';
-import '../css/app.css';
+// import '../css/app.css';
 
 import layoutsPlugin from './plugins/layouts';
 import { loadFonts } from './plugins/webfontloader';

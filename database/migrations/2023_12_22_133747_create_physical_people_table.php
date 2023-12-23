@@ -20,14 +20,13 @@ return new class() extends Migration {
             $table->string('name');
             $table->string('last_name');
             $table->string('surname');
+            $table->enum('gender', ['Masculino', 'Femenino', 'Otro']);
             $table->date('birth_date');
-            $table->string('birth_place');
-            $table->string('birth_country');
             $table->string('civil_status');
             $table->string('religion');
             $table->timestamps();
             $table->softDeletes();
-            $table->unique(['name', 'last_name', 'surname', 'birth_date', 'birth_place', 'birth_country', 'civil_status', 'religion'], 'physical_people_unique');
+            $table->unique(['name', 'last_name', 'surname', 'gender', 'birth_date', 'civil_status', 'religion'], 'physical_people_unique');
         });
     }
 

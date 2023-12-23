@@ -20,6 +20,7 @@ return new class() extends Migration {
             $table->morphs('personable');
             $table->unique(['personable_id', 'personable_type'], 'personable_unique');
             $table->foreignId('person_type_id')->constrained('person_types')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->string('rfc', 13)->nullable()->unique();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -25,6 +25,7 @@ final class Person extends Model
         'personable_id',
         'personable_type',
         'type_id',
+        'rfc',
     ];
 
     public function personable(): \Illuminate\Database\Eloquent\Relations\MorphTo

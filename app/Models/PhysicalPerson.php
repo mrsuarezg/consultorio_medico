@@ -29,8 +29,6 @@ final class PhysicalPerson extends Model
         'surname',
         'gender',
         'birth_date',
-        'birth_place',
-        'birth_country',
         'civil_status',
         'religion',
     ];
