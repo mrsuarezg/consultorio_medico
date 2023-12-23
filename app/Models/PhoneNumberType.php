@@ -36,7 +36,7 @@ final class PhoneNumberType extends Model
         'name' => 'string',
     ];
 
-    public function phoneNumbers()
+    public function phoneNumbers(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(PhoneNumber::class);
     }

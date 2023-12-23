@@ -27,7 +27,7 @@ final class MoralPerson extends Model
         'name',
     ];
 
-    public function person()
+    public function person(): \Illuminate\Database\Eloquent\Relations\MorphOne
     {
         return $this->morphOne(Person::class, 'personable');
     }

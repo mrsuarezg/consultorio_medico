@@ -1,10 +1,5 @@
 <?php
 
-/*
- * This file is part of Consultorio Medico Application.
- * (c) The devcsuarez Team <devcsuarez@gmail.com>
- */
-
 namespace App\Models;
 
 use App\Traits\Models\HasColumnListing;
@@ -12,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-final class AddressType extends Model
+final class Somatometry extends Model
 {
     use HasColumnListing;
     use HasFactory;
@@ -24,7 +19,10 @@ final class AddressType extends Model
      * @var array<string>
      */
     protected $fillable = [
-        'name',
+        'consultation_id',
+        'weight',
+        'height',
+        'IMC',
     ];
 
     /**
@@ -33,11 +31,14 @@ final class AddressType extends Model
      * @var array<string>
      */
     protected $casts = [
-        'name' => 'string',
+        'consultation_id' => 'integer',
+        'weight' => 'float', // Peso
+        'height' => 'float', // Talla
+        'IMC' => 'float', // IMC (Índice de masa corporal)
     ];
 
-    public function addresses(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function consultation(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->hasMany(Address::class);
+        return $this->belongsTo(Consultation::class);
     }
 }

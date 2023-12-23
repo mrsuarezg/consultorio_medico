@@ -24,6 +24,11 @@ final class DevDatabaseSeeder extends Seeder
             PersonTypeSeeder::class,
             AddressTypeSeeder::class,
             PhoneNumberTypeSeeder::class,
+            // PersonSeeder::class,
+            // AddressSeeder::class,
+            // PhoneNumberSeeder::class,
+            BloodTypeSeeder::class,
+            SpecialtySeeder::class,
         ]);
     }
 }

@@ -1,10 +1,5 @@
 <?php
 
-/*
- * This file is part of Consultorio Medico Application.
- * (c) The devcsuarez Team <devcsuarez@gmail.com>
- */
-
 namespace App\Models;
 
 use App\Traits\Models\HasColumnListing;
@@ -12,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-final class Address extends Model
+final class HereditaryFamilyHistory extends Model
 {
     use HasColumnListing;
     use HasFactory;
@@ -21,18 +16,21 @@ final class Address extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int, string>
+     * @var array<string>
      */
     protected $fillable = [
-        'street',
-        'inner_number',
-        'outer_number',
-        'city',
-        'state',
-        'country',
-        'postal_code',
-        'type_id',
-        'person_id',
+        'patient_id',
+        'observations',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string>
+     */
+    protected $casts = [
+        'patient_id' => 'integer',
+        'observations' => 'string',
     ];
 
     public function person(): \Illuminate\Database\Eloquent\Relations\BelongsTo

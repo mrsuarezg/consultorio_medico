@@ -1,10 +1,5 @@
 <?php
 
-/*
- * This file is part of Consultorio Medico Application.
- * (c) The devcsuarez Team <devcsuarez@gmail.com>
- */
-
 namespace App\Models;
 
 use App\Traits\Models\HasColumnListing;
@@ -12,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-final class AddressType extends Model
+final class BloodType extends Model
 {
     use HasColumnListing;
     use HasFactory;
@@ -27,17 +22,8 @@ final class AddressType extends Model
         'name',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string>
-     */
-    protected $casts = [
-        'name' => 'string',
-    ];
-
-    public function addresses(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function patients(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(Address::class);
+        return $this->hasMany(Patient::class);
     }
 }

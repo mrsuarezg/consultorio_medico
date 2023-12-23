@@ -30,7 +30,7 @@ final class PhoneNumber extends Model
         'person_id',
     ];
 
-    public function person()
+    public function person(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Person::class);
     }

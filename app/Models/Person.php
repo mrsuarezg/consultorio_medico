@@ -27,17 +27,17 @@ final class Person extends Model
         'type_id',
     ];
 
-    public function personable()
+    public function personable(): \Illuminate\Database\Eloquent\Relations\MorphTo
     {
         return $this->morphTo();
     }
 
-    public function addresses()
+    public function addresses(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Address::class);
     }
 
-    public function phoneNumbers()
+    public function phoneNumbers(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(PhoneNumber::class);
     }
