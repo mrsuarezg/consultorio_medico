@@ -11,11 +11,11 @@ return new class() extends Migration
      */
     public function up(): void
     {
-        Schema::create('doctors',static function (Blueprint $table): void {
+        Schema::create('contraceptive_methods',static function (Blueprint $table): void {
             $table->id();
-            $table->foreignId('person_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('specialty_id')->constrained()->cascadeOnDelete();
-            $table->string('professional_card')->comment('Cédula profesional')->unique();
+            $table->string('name')->unique()->comment('Nombre');
+            $table->string('description')->nullable()->comment('Descripción');
+            $table->string('observations')->nullable()->comment('Observaciones');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -26,6 +26,6 @@ return new class() extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('doctors');
+        Schema::dropIfExists('contraceptive_methods');
     }
 };

@@ -3,12 +3,13 @@ import { reactive, ref, onMounted } from 'vue';
 import { bloodTypeList, contraceptiveMethodList, maritalStatusList, religionList, yesNoList } from '@data/lists';
 import { PatientService } from '@services/PatientService';
 import PersonForm from '@components/Form/PersonForm.vue';
-import { LEGAL_PERSON_ID, NATURAL_PERSON_ID } from '@data/constants';
+import ContactForm from '@components/Form/ContactForm.vue';
+import { NATURAL_PERSON_ID } from '@data/constants';
 
 const props = defineProps({
     patientId: {
-        type: [Number, null],
-        required: false,
+        type: Number,
+        required: true,
     },
 });
 
@@ -20,16 +21,10 @@ const emit = defineEmits([
     'showSnackbar',
 ]);
 
-defineExpose({
-    executeMainAction,
-});
-
-const { closeSmallDialog } = inject('customerTable');
-const step = ref(1);
-
 const mainForm = ref(null);
+const step = ref(1);
 const data = reactive({
-    person_type_id: NATURAL_PERSON_ID,
+    person_type_id: null,
     name: null,
     last_name: null,
     surname: null,
@@ -70,58 +65,10 @@ const data = reactive({
         hospitalizations: null,
     },
 });
-let isRegisterMode = true;
 
-onMounted(() => {
-    if (Boolean(props.patientId)) {
-        getPatientData(props.patientId);
-        isRegisterMode = false;
-    }
+onMounted(async () => {
+    await getPatientData(props.patientId);
 });
-
-function executeMainAction() {
-    if (isRegisterMode) {
-        registerPatient();
-    } else {
-        updatePatient();
-    }
-}
-
-async function registerPatient() {
-    try {
-        emit('isLoading', true);
-        const form = await mainForm.value.validate();
-        if (!form.valid) {
-            emit('showSnackbar', 'Favor de comprobar todos los campos');
-            return;
-        }
-        await PatientService.create(createBody());
-        closeSmallDialog(true, 'Paciente registrado corretamente.');
-    } catch (error) {
-        console.error(error);
-        emit('showSnackbar', error?.response?.data?.message ?? 'Ha ocurrido un error al registrar el paciente');
-    } finally {
-        emit('isLoading', false);
-    }
-}
-
-async function updatePatient() {
-    try {
-        emit('isLoading', true);
-        const form = await mainForm.value.validate();
-        if (!form.valid) {
-            emit('showSnackbar', 'Favor de comprobar todos los campos');
-            return;
-        }
-        await PatientService.update(props.patientId, createBody());
-        closeSmallDialog(true, 'Paciente actualizado correctamente.');
-    } catch (error) {
-        console.error(error);
-        emit('showSnackbar', error?.response?.data?.message ?? 'Ha ocurrido un error al actualizar el paciente');
-    } finally {
-        emit('isLoading', false);
-    }
-}
 
 async function getPatientData(id) {
     const params = {
@@ -196,24 +143,6 @@ async function getPatientData(id) {
         },
     });
 }
-
-function createBody() {
-    const keys = Object.keys(data);
-    let body = {};
-    keys.forEach(key => {
-        if (Boolean(data[key])) {
-            body[key] = data[key];
-        }
-    });
-    if (data.person_type_id === LEGAL_PERSON_ID) {
-        delete body.name;
-        delete body.last_name;
-        delete body.surname;
-        delete body.gender;
-        delete body.birth_date;
-    }
-    return body;
-}
 </script>
 
 <template>
@@ -223,18 +152,18 @@ function createBody() {
                 <PersonForm v-model:personType="data.person_type_id" v-model:name="data.name"
                     v-model:lastName="data.last_name" v-model:surname="data.surname" v-model:businessName="data.name"
                     v-model:rfc="data.rfc" v-model:birthdate="data.birth_date" v-model:gender="data.gender"
-                    :readonly="['personType', 'rfc']" get-rfc md="6" addTitle>
+                    :readonly="['all']" get-rfc md="6">
                     <template #endNaturalPersonFields>
                         <VCol cols="12" md="6">
-                            <VAutocomplete label="Estado civil *" v-model="data.civil_status" :rules="[isRequired]"
-                                :items="maritalStatusList">
+                            <VAutocomplete label="Estado civil" v-model="data.civil_status" readonly variant="plain"
+                                menu-icon="''" :items="maritalStatusList">
                                 <template #no-data>
                                     <span class="px-3">Estado civil no encontrado</span>
                                 </template>
                             </VAutocomplete>
                         </VCol>
                         <VCol cols="12" md="6">
-                            <VAutocomplete label="Religión" v-model="data.religion" :rules="[isRequired]"
+                            <VAutocomplete label="Religión" v-model="data.religion" readonly variant="plain" menu-icon="''"
                                 :items="religionList">
                                 <template #no-data>
                                     <span class="px-3">Religión no encontrada</span>
@@ -242,15 +171,16 @@ function createBody() {
                             </VAutocomplete>
                         </VCol>
                         <VCol cols="12" md="6">
-                            <VAutocomplete label="Tipo de sangre" v-model="data.blood_type_id" :rules="[isRequired]"
-                                :items="bloodTypeList" item-title="name" item-value="id">
+                            <VAutocomplete label="Tipo de sangre" v-model="data.blood_type_id" readonly variant="plain"
+                                menu-icon="''" :items="bloodTypeList" item-title="name" item-value="id">
                                 <template #no-data>
                                     <span class="px-3">Tipo de sangre no encontrado</span>
                                 </template>
                             </VAutocomplete>
                         </VCol>
                         <VCol cols="12" md="6">
-                            <VTextField label="Ocupación" v-model="data.occupation" :rules="[isRequired]" />
+                            <VTextField label="Ocupación" v-model="data.occupation" readonly variant="plain"
+                                menu-icon="''" />
                         </VCol>
                     </template>
                 </PersonForm>
@@ -260,7 +190,7 @@ function createBody() {
                 <VRow>
                     <VCol cols="12" md="12">
                         <VTextarea v-model="data.hereditary_family_histories.observations" bg-color="amber-lighten-4"
-                            color="orange orange-darken-4" auto-grow />
+                            color="orange orange-darken-4" auto-grow readonly />
                     </VCol>
                 </VRow>
             </VWindowItem>
@@ -269,15 +199,15 @@ function createBody() {
                 <VRow>
                     <VCol cols="12" md="12">
                         <VTextarea label="Habitación" v-model="data.non_pathological_histories.room"
-                            bg-color="amber-lighten-4" color="orange orange-darken-4" auto-grow />
+                            bg-color="amber-lighten-4" color="orange orange-darken-4" auto-grow readonly />
                     </VCol>
                     <VCol cols="12" md="12">
                         <VTextarea label="Hábitos higiénicos" v-model="data.non_pathological_histories.hygiene_habits"
-                            bg-color="amber-lighten-4" color="orange orange-darken-4" auto-grow />
+                            bg-color="amber-lighten-4" color="orange orange-darken-4" auto-grow readonly />
                     </VCol>
                     <VCol cols="12" md="12">
                         <VTextarea label="Alimentación" v-model="data.non_pathological_histories.feeding"
-                            bg-color="amber-lighten-4" color="orange orange-darken-4" auto-grow />
+                            bg-color="amber-lighten-4" color="orange orange-darken-4" auto-grow readonly />
                     </VCol>
                 </VRow>
             </VWindowItem>
@@ -285,23 +215,23 @@ function createBody() {
                 <h4 class="mt-4 mb-2">Antecedentes ginéco-obstetricos</h4>
                 <VRow>
                     <VCol cols="12" md="6">
-                        <VTextField label="Menarca" v-model="data.gynecological_obstetric_pregnancies.menarche" />
+                        <VTextField label="Menarca" v-model="data.gynecological_obstetric_pregnancies.menarche" readonly />
                     </VCol>
                     <VCol cols="12" md="6">
-                        <VTextField label="IVSA" v-model="data.gynecological_obstetric_pregnancies.ivsa" />
+                        <VTextField label="IVSA" v-model="data.gynecological_obstetric_pregnancies.ivsa" readonly />
                     </VCol>
                     <VCol cols="12" md="6">
                         <VTextField label="Número de parejas"
-                            v-model="data.gynecological_obstetric_pregnancies.number_of_partners" />
+                            v-model="data.gynecological_obstetric_pregnancies.number_of_partners" readonly />
                     </VCol>
                     <VCol cols="12" md="6">
                         <VTextField label="Embarazos G_P_C_A_O"
-                            v-model="data.gynecological_obstetric_pregnancies.pregnancies_G_P_C_A_O" />
+                            v-model="data.gynecological_obstetric_pregnancies.pregnancies_G_P_C_A_O" readonly />
                     </VCol>
                     <VCol cols="12" md="6">
                         <VAutocomplete label="Método anticonceptivo"
                             v-model="data.gynecological_obstetric_pregnancies.contraceptive_method_id"
-                            :items="contraceptiveMethodList" item-title="name" item-value="id">
+                            :items="contraceptiveMethodList" item-title="name" item-value="id" readonly>
                             <template #no-data>
                                 <span class="px-3">
                                     Método anticonceptivo no encontrado
@@ -317,37 +247,38 @@ function createBody() {
                     <VCol cols="12" md="6">
                         <VTextarea label="Enfermedades infecto-contagiosas"
                             v-model="data.pathological_histories.infectious_diseases" bg-color="amber-lighten-4"
-                            color="orange orange-darken-4" auto-grow />
+                            color="orange orange-darken-4" auto-grow readonly />
                     </VCol>
                     <VCol cols="12" md="6">
                         <VTextarea label="Enfermedades crónico-degenerativas"
                             v-model="data.pathological_histories.chronic_degenerative_diseases" bg-color="amber-lighten-4"
-                            color="orange orange-darken-4" auto-grow />
+                            color="orange orange-darken-4" auto-grow readonly />
                     </VCol>
                     <VCol cols="12" md="6">
                         <VTextarea label="Alergias" v-model="data.pathological_histories.allergies"
-                            bg-color="amber-lighten-4" color="orange orange-darken-4" auto-grow />
+                            bg-color="amber-lighten-4" color="orange orange-darken-4" auto-grow readonly />
                     </VCol>
                     <VCol cols="12" md="6">
                         <VTextarea label="Intervenciones quirúrgicas"
                             v-model="data.pathological_histories.surgical_interventions" bg-color="amber-lighten-4"
-                            color="orange orange-darken-4" auto-grow />
+                            color="orange orange-darken-4" auto-grow readonly />
                     </VCol>
                     <VCol cols="12" md="6">
                         <VTextarea label="Traumatismos" v-model="data.pathological_histories.traumatism"
-                            bg-color="amber-lighten-4" color="orange orange-darken-4" auto-grow />
+                            bg-color="amber-lighten-4" color="orange orange-darken-4" auto-grow readonly />
                     </VCol>
                     <VCol cols="12" md="6">
-                        <VTextField label="Transfusiones" v-model="data.pathological_histories.transfusions" />
+                        <VTextField label="Transfusiones" v-model="data.pathological_histories.transfusions" readonly />
                     </VCol>
                     <VCol cols="12" md="6">
-                        <VTextField label="Convulsiones" v-model="data.pathological_histories.seizures" />
+                        <VTextField label="Convulsiones" v-model="data.pathological_histories.seizures" readonly />
                     </VCol>
                     <VCol cols="12" md="6">
-                        <VTextField label="Adicciones" v-model="data.pathological_histories.addictions" />
+                        <VTextField label="Adicciones" v-model="data.pathological_histories.addictions" readonly />
                     </VCol>
                     <VCol cols="12" md="6">
-                        <VTextField label="Hospitalizaciones" v-model="data.pathological_histories.hospitalizations" />
+                        <VTextField label="Hospitalizaciones" v-model="data.pathological_histories.hospitalizations"
+                            readonly />
                     </VCol>
                 </VRow>
             </VWindowItem>

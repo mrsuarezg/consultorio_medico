@@ -24,14 +24,9 @@ final class Person extends Model
     protected $fillable = [
         'personable_id',
         'personable_type',
-        'type_id',
+        'person_type_id',
         'rfc',
     ];
-
-    public function personable(): \Illuminate\Database\Eloquent\Relations\MorphTo
-    {
-        return $this->morphTo();
-    }
 
     public function addresses(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
@@ -41,5 +36,10 @@ final class Person extends Model
     public function phoneNumbers(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(PhoneNumber::class);
+    }
+
+    public function personable(): \Illuminate\Database\Eloquent\Relations\MorphTo
+    {
+        return $this->morphTo();
     }
 }

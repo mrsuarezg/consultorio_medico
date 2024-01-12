@@ -160,6 +160,81 @@ export const bloodTypeList = [
     },
 ];
 
+export const contraceptiveMethodList = [
+    {
+        id: 1,
+        name: 'Preservativo masculino',
+    },
+    {
+        id: 2,
+        name: 'Diafragma',
+    },
+    {
+        id: 3,
+        name: 'Dispositivo intrauterino (DIU)',
+    },
+    {
+        id: 4,
+        name: 'Espermicidas',
+    },
+    {
+        id: 5,
+        name: 'Esterilización',
+    },
+    {
+        id: 6,
+        name: 'Implante subdérmico',
+    },
+    {
+        id: 7,
+        name: 'Inyección anticonceptiva',
+    },
+    {
+        id: 8,
+        name: 'Método de la amenorrea de la lactancia (MELA)',
+    },
+    {
+        id: 9,
+        name: 'Método de la temperatura basal',
+    },
+    {
+        id: 10,
+        name: 'Método del moco cervical o Billings',
+    },
+    {
+        id: 11,
+        name: 'Método del ritmo',
+    },
+    {
+        id: 12,
+        name: 'Píldora anticonceptiva',
+    },
+    {
+        id: 13,
+        name: 'Píldora de emergencia',
+    },
+    {
+        id: 14,
+        name: 'Preservativo femenino',
+    },
+    {
+        id: 15,
+        name: 'Vasectomía',
+    },
+    {
+        id: 16,
+        name: 'Ligadura de trompas',
+    },
+    {
+        id: 17,
+        name: 'Otro',
+    },
+    {
+        id: 18,
+        name: 'Ninguno',
+    },
+];
+
 export const yesNoList = [
     'Sí',
     'No',

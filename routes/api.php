@@ -5,6 +5,9 @@
  * (c) The devcsuarez Team <devcsuarez@gmail.com>
  */
 
+use App\Http\Controllers\ConsultationController;
+use App\Http\Controllers\PatientsController;
+use App\Http\Controllers\PersonController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +22,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:10,1');
+
+Route::prefix('v1')
+    ->middleware(['auth:api', 'throttle:60,1'])
+    ->group(static function (): void {
+        Route::prefix('/consultation')->group(static function ():void {
+            Route::post('/', [ConsultationController::class, 'search']);
+            Route::post('/store', [ConsultationController::class, 'store']);
+            Route::put('/{consultation}/update', [ConsultationController::class, 'update']);
+        });
+        Route::prefix('/patient')->group(static function ():void {
+            Route::post('/', [PatientsController::class, 'search']);
+            Route::post('/store', [PatientsController::class, 'store']);
+            Route::put('/{patient}/update', [PatientsController::class, 'update']);
+        });
+        Route::prefix('/person')->group(static function ():void {
+            Route::post('/', [PersonController::class, 'search']);
+            Route::post('/store', [PersonController::class, 'store']);
+        });
+    });

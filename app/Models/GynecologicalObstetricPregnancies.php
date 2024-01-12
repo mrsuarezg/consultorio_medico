@@ -24,7 +24,7 @@ final class GynecologicalObstetricPregnancies extends Model
         'IVSA', // IVSA (Inicio de vida sexual activa)
         'number_of_partners', // Número de parejas
         'pregnancies_G_P_C_A_O', // Embarazos G, P, C, A, O (Gestaciones, Partos, Cesáreas, Abortos, Obitos)
-        'contraceptive_method', // Método anticonceptivo
+        'contraceptive_method_id', // Método anticonceptivo
     ];
 
     /**
@@ -38,8 +38,25 @@ final class GynecologicalObstetricPregnancies extends Model
         'IVSA' => 'string',
         'number_of_partners' => 'string',
         'pregnancies_G_P_C_A_O' => 'string',
-        'contraceptive_method' => 'string',
+        'contraceptive_method_id' => 'integer',
     ];
+
+    /**
+     * Get the contraceptiveMethod that owns the GynecologicalObstetricPregnancies.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+
+    public function contraceptiveMethod(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(ContraceptiveMethod::class);
+    }
+
+    /**
+     * Get the patient that owns the GynecologicalObstetricPregnancies.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
 
     public function patient(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {

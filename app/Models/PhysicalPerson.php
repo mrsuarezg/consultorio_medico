@@ -8,6 +8,7 @@
 namespace App\Models;
 
 use App\Traits\Models\HasColumnListing;
+use Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -33,8 +34,24 @@ final class PhysicalPerson extends Model
         'religion',
     ];
 
+    // // // full_name is a virtual attribute
+    protected $appends = ['fullname'];
+
     public function person(): \Illuminate\Database\Eloquent\Relations\MorphOne
     {
         return $this->morphOne(Person::class, 'personable');
+    }
+
+    /**
+     * Get the user's full name.
+     *
+     * @return string
+     */
+    public function getFullNameAttribute(): string
+    {
+        return "{$this->name} {$this->last_name} {$this->surname}";
+        // return Attribute::make('fullname', function () {
+        //     return "{$this->name} {$this->last_name} {$this->surname}";
+        // });
     }
 }

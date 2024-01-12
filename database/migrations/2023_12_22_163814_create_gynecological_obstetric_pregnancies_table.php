@@ -18,7 +18,7 @@ return new class() extends Migration
             $table->string('IVSA')->nullable()->comment('IVSA (Inicio de vida sexual activa)');
             $table->string('number_of_partners')->nullable()->comment('Número de parejas');
             $table->string('pregnancies_G_P_C_A_O')->nullable()->comment('Embarazos G, P, C, A, O (Gestaciones, Partos, Cesáreas, Abortos, Obitos)');
-            $table->string('contraceptive_method')->nullable()->comment('Método anticonceptivo');
+            $table->foreignId('contraceptive_method_id')->nullable()->constrained('contraceptive_methods', 'id', 'gop_cm_fk_id')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
             $table->softDeletes();
         });
